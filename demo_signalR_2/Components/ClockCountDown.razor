@@ -1,0 +1,57 @@
+﻿<style>
+    .remainingTime {
+        height: 40px;
+        width: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        font-size: 20px;
+        font-weight: bold;
+        color: black
+    }
+</style>
+
+<div class="d-flex align-center">
+    <MudPaper Class="remainingTime">@hr</MudPaper>
+    <span class="mx-2" style="font-size: 28px; color: white">:</span>
+    <MudPaper Class="remainingTime">@mi</MudPaper>
+    <span class="mx-2" style="font-size: 28px; color: white">:</span>
+    <MudPaper Class="remainingTime">@se</MudPaper>
+</div>
+
+@code {
+    [Parameter]
+    public int RemainingSeconds { get; set; }
+
+    private int hr => RemainingSeconds > 0 ? RemainingSeconds / 3600 : 0;
+    private int mi => RemainingSeconds > 0 ? RemainingSeconds % 3600 / 60 : 0;
+    private int se => RemainingSeconds % 60;
+
+    private Timer timer = new Timer(_ => { }, null, Timeout.Infinite, Timeout.Infinite);
+
+    protected override void OnInitialized()
+    {
+        // Create a timer that ticks every 1000 milliseconds (1 second)
+        timer = new Timer(DecrementRemainingSeconds, null, 0, 1000);
+
+    }
+
+    private void DecrementRemainingSeconds(object? state)
+    {
+        if (RemainingSeconds > 0)
+        {
+            // Decrement remainingSeconds by 1
+            RemainingSeconds--;
+
+            // Notify Blazor to update the UI
+            InvokeAsync(() => StateHasChanged());
+
+            // Check if remainingSeconds is less than or equal to 0 and stop the timer
+            if (RemainingSeconds <= 0)
+            {
+                timer.Dispose();
+            }
+        }
+    }
+
+}
