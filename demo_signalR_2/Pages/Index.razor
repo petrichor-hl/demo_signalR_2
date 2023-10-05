@@ -3,6 +3,9 @@
 @using System.Globalization;
 @using demo_signalR_2.Components
 @using demo_signalR_2.Data
+@using demo_signalR_2.Shared.func
+@inject FormatCurrency formatCurrency
+
 
 <PageTitle>BlazorServer</PageTitle>
 
@@ -11,7 +14,7 @@
 </head>
 
 <style>
-    .wrapper {
+    /* .wrapper {
         display: flex;
         gap: 12px;
         flex-wrap: wrap;
@@ -26,6 +29,25 @@
     }
 
     .wrapper .item:hover {
+        transform: scale(1.15);
+        transition: transform 0.4s 0.1s;
+        border: 1px solid black;
+    } */
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(227px, 1fr));
+        gap: 12px;
+    }
+
+    .grid-item {
+        aspect-ratio: 227/340;
+        background-color: white;
+        border-radius: 8px;
+        transition: transform 0.2s;
+    }
+
+    .grid-item:hover {
         transform: scale(1.15);
         transition: transform 0.4s 0.1s;
         border: 1px solid black;
@@ -88,29 +110,27 @@
          style="background-color: #013366">
 
         <div class="d-flex align-center gap-2" style="color: #FFEE12;">
-            
             <ClockCountDown RemainingSeconds="17423"/>
             <MudIcon Icon="@Icons.Material.Filled.Bolt" Size="Size.Large" Style="animation: zoom 1s infinite ease-in-out" />
             <MudText Style="font-style: italic; font-size: 28px; font-weight: bold">GIỜ VÀNG DEAL SỐC</MudText>
-           
         </div>
 
-        <div class="wrapper">
+        <div class="grid-container">
             @for (int i = 0; i <= 7; i++)
             {
-                <div class="item px-4 d-flex flex-column">
+                <div class="grid-item px-4 d-flex flex-column">
                     <img src="Assets/Images/macbook/@(DummyData.macbooks[i].Id).webp" style="margin-bottom: 14px" />
                     <span class="max-line-2 mb-1" style="font-weight: bold; color: black">
                         @DummyData.macbooks[i].Name
                     </span>
 
                     <span style="color: #6D6E72; font-size: 14px; text-decoration: line-through; height: 16px">
-                        @formattedPriceOf(@DummyData.macbooks[i].Price)
+                        @formatCurrency.FormattedPriceOf(@DummyData.macbooks[i].Price)
                     </span>
 
                     <div class="d-flex gap-4 mb-2">
                         <span style="color: #E30019; font-size: 18px; font-weight: bold;">
-                            @formattedPriceOf(calcDiscountPrice(@DummyData.macbooks[i].Price, @DummyData.macbooks[i].Discount))
+                            @formatCurrency.FormattedPriceOf(formatCurrency.CalcDiscountPrice(@DummyData.macbooks[i].Price, @DummyData.macbooks[i].Discount))
                         </span>
 
                         <div class="discount-label">
@@ -129,7 +149,7 @@
     <div class="d-flex flex-column rounded py-6 px-6 gap-2 "
          style="background-color: #013366">
 
-        <div class="d-flex align-center gap-2" style="color: #FFEE12">
+        <div class="d-flex align-center gap-2" style="color: #013366">
 
             <ClockCountDown RemainingSeconds="30514" />
             <MudIcon Icon="@Icons.Material.Filled.Bolt" Size="Size.Large" Style="animation: zoom 1s infinite ease-in-out" />
@@ -149,12 +169,12 @@
                         </span>
 
                         <span style="color: #6D6E72; font-size: 14px; text-decoration: line-through">
-                            @formattedPriceOf(@DummyData.products[i].Price)
+                            @formatCurrency.FormattedPriceOf(@DummyData.products[i].Price)
                         </span>
 
                         <div class="d-flex gap-4">
                             <span style="color: #E30019; font-size: 18px; font-weight: bold;">
-                                @formattedPriceOf(calcDiscountPrice(@DummyData.products[i].Price, @DummyData.products[i].Discount))
+                                @formatCurrency.FormattedPriceOf(formatCurrency.CalcDiscountPrice(@DummyData.products[i].Price, @DummyData.products[i].Discount))
                             </span>
 
                             <div class="discount-label">
@@ -171,15 +191,6 @@
 
 </div>
 
-
-
 @code {
-    private string formattedPriceOf(int Price)
-    {
-        return Price.ToString("#,##0", CultureInfo.GetCultureInfo("vi-VN")) + "₫";
-    }
-    private int calcDiscountPrice(int Price, int Discount)
-    {
-        return (int)(Price * (1 - (double)Discount / 100));
-    }
+
 }

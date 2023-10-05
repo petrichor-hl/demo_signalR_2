@@ -1,4 +1,5 @@
 using demo_signalR_2.Data;
+using demo_signalR_2.Shared.func;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
@@ -12,6 +13,8 @@ StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configurat
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
+
+builder.Services.AddSingleton<FormatCurrency>();
 
 var app = builder.Build();
 
