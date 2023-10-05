@@ -1,5 +1,8 @@
 ﻿@page "/"
+
+@using System.Globalization;
 @using demo_signalR_2.Components
+@using demo_signalR_2.Data
 
 <PageTitle>BlazorServer</PageTitle>
 
@@ -31,9 +34,7 @@
     .item {
         min-width: 227px;
         height: 320px;
-        line-height: 300px;
         background-color: white;
-        text-align: center;
         border-radius: 8px;
         transition: transform 0.2s;
     }
@@ -89,10 +90,42 @@
         <div class="d-flex gap-4">
             <MudImage Src="Assets/Images/pc-backdrop.webp" Style="border-radius: 8px; height: 300px"/>
             <div class="horizontal-list" style="overflow-x: scroll">
-                @for (int i = 1; i <= 5; i++)
+                @for (int i = 0; i <= 4; i++)
                 {
-                    <div class="item px-4 pt-6 pb-4" >
-                        <img src="Assets/Images/pc-@(i).webp" style="max-width: 100%"/>
+                    <style>
+                        .product-title {
+                            font-weight: bold;
+                            font-size: 16px;
+                        }
+
+                        .discount-label {
+                            color: #E30019; 
+                            border: 1px solid #E30019;
+                            background-color: #E3001922; 
+                            padding: 0px 6px;
+                            border-radius: 4px;
+                            font-weight: 500;
+                            height: 21px;
+                        }
+                    </style>
+                    <div class="item px-4 pt-6 pb-4 d-flex flex-column" >
+                        <img src="Assets/Images/@(DummyData.products[i].Id).webp" style="max-width: 100%; margin-bottom: 14px"/>
+                        <span class="product-title mb-2">@DummyData.products[i].Name</span>
+
+                        <span style="color: #6D6E72; font-size: 14px; text-decoration: line-through">
+                            @formattedPriceOf(@DummyData.products[i].Price)
+                        </span>
+
+                        <div class="d-flex gap-2">
+                            <span style="color: #E30019; font-size: 16px; font-weight: bold;">
+                                @formattedPriceOf(calcDiscountPrice(@DummyData.products[i].Price, @DummyData.products[i].Discount))
+                            </span>
+
+                            <div class="discount-label">
+                                - @DummyData.products[i].Discount%
+                            </div>
+                        </div>
+
                     </div>
                 }
             </div>
@@ -105,5 +138,12 @@
 
 
 @code {
-
+    private string formattedPriceOf(int Price)
+    {
+        return Price.ToString("#,##0", CultureInfo.GetCultureInfo("vi-VN")) + "₫";
+    }
+    private int calcDiscountPrice(int Price, int Discount)
+    {
+        return (int)(Price * (1 - (double)Discount / 100));
+    }
 }
