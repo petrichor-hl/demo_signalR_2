@@ -1,0 +1,48 @@
+﻿<style>
+    .progress-bar {
+        width: 100%;
+        height: 24px;
+        background-color: #FF8D9B; 
+        border-radius: 12px; 
+        position: relative;
+    }
+
+    .progress-bar-fill {
+        height: 100%;
+        background-color: #E30019;
+        border-radius: 12px;
+        color: white;
+    }
+</style>
+
+<div class="d-flex gap-2">
+    <div class="progress-bar">
+        <div class="progress-bar-fill" style="width: @((double)Current / Total * 100)%" />
+        <span style="color: white; font-weight: 500; position: absolute;  top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            Đã bán: @Current
+        </span>
+
+        @* hoặc
+        <div style="width: 100%; height: 100%; position:absolute; top: 0px; left: 0px; display: grid; place-items:center">
+        <span style="color: white; font-weight: 500;">
+        Đã bán: @Current
+        </span>
+        </div> *@
+
+    </div>
+
+    <MudIcon Icon="@Icons.Material.Filled.LocalFireDepartment" Style="color: #E30019" />
+</div>
+
+
+
+
+@code {
+
+	[Parameter]
+	public int Current { get; set; }
+
+	[Parameter]
+	public int Total { get; set; }
+
+}

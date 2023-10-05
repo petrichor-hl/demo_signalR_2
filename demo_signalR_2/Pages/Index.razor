@@ -6,6 +6,10 @@
 
 <PageTitle>BlazorServer</PageTitle>
 
+<head>
+    <link rel="stylesheet" href="Assets/css/animations.css" />
+</head>
+
 <style>
     .wrapper {
         display: flex;
@@ -15,7 +19,7 @@
 
     .wrapper .item {
         width: 227px;
-        height: 320px;
+        height: 340px;
         background-color: white;
         border-radius: 8px;
         transition: transform 0.2s;
@@ -24,7 +28,7 @@
     .wrapper .item:hover {
         transform: scale(1.15);
         transition: transform 0.4s 0.1s;
-        background: linear-gradient(#D601AA, #FFEE12)
+        border: 1px solid black;
     }
 
     .horizontal-list {
@@ -47,15 +51,34 @@
 
     .horizontal-list .item {
         width: 227px;
-        height: 300px;
+        height: 288px;
         background-color: white;
         border-radius: 8px;
         margin-bottom: 8px;
     }
 
     .horizontal-list .item:hover {
-                background: linear-gradient(white, #FFEE12);
+        background: linear-gradient(white, #FFEE12);
         cursor: pointer
+    }
+
+    .discount-label {
+        color: #E30019;
+        border: 1px solid #E30019;
+        background-color: #E3001922;
+        padding: 0px 6px;
+        border-radius: 4px;
+        font-weight: 500;
+        height: 21px;
+    }
+
+    .max-line-2 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* number of lines to show */
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
     }
 
 </style>
@@ -64,24 +87,41 @@
     <div class="d-flex flex-column rounded py-6 px-6 gap-2 " 
          style="background-color: #013366">
 
-        <div class="d-flex align-center gap-2" style="color: #FFEE12">
+        <div class="d-flex align-center gap-2" style="color: #FFEE12;">
             
             <ClockCountDown RemainingSeconds="17423"/>
-            <MudIcon Icon="@Icons.Material.Filled.Bolt" Size="Size.Large" />
+            <MudIcon Icon="@Icons.Material.Filled.Bolt" Size="Size.Large" Style="animation: zoom 1s infinite ease-in-out" />
             <MudText Style="font-style: italic; font-size: 28px; font-weight: bold">GIỜ VÀNG DEAL SỐC</MudText>
+           
         </div>
 
         <div class="wrapper">
-            <div class="item">item-1</div>
-            <div class="item">item-2</div>
-            <div class="item">item-3</div>
-            <div class="item">item-4</div>
-            <div class="item">item-5</div>
-            <div class="item">item-6</div>
-            <div class="item">item-7</div>
-            <div class="item">item-8</div>
+            @for (int i = 0; i <= 7; i++)
+            {
+                <div class="item px-4 d-flex flex-column">
+                    <img src="Assets/Images/macbook/@(DummyData.macbooks[i].Id).webp" style="margin-bottom: 14px" />
+                    <span class="max-line-2 mb-1" style="font-weight: bold; color: black">
+                        @DummyData.macbooks[i].Name
+                    </span>
 
-            
+                    <span style="color: #6D6E72; font-size: 14px; text-decoration: line-through; height: 16px">
+                        @formattedPriceOf(@DummyData.macbooks[i].Price)
+                    </span>
+
+                    <div class="d-flex gap-4 mb-2">
+                        <span style="color: #E30019; font-size: 18px; font-weight: bold;">
+                            @formattedPriceOf(calcDiscountPrice(@DummyData.macbooks[i].Price, @DummyData.macbooks[i].Discount))
+                        </span>
+
+                        <div class="discount-label">
+                            - @DummyData.macbooks[i].Discount%
+                        </div>
+                    </div>
+
+                    <ProgressBar Current="@DummyData.macbooks[i].Sold" Total="@DummyData.macbooks[i].Quantity"/>
+
+                </div>
+            }
         </div>
 
     </div>
@@ -92,41 +132,27 @@
         <div class="d-flex align-center gap-2" style="color: #FFEE12">
 
             <ClockCountDown RemainingSeconds="30514" />
-            <MudIcon Icon="@Icons.Material.Filled.Bolt" Size="Size.Large" />
+            <MudIcon Icon="@Icons.Material.Filled.Bolt" Size="Size.Large" Style="animation: zoom 1s infinite ease-in-out" />
             <MudText Style="font-style: italic; font-size: 28px; font-weight: bold">GAMING STATION RTX4000 SERIES</MudText>
 
         </div>
 
         <div class="d-flex gap-4">
-            <MudImage Src="Assets/Images/pc/pc-backdrop.webp" Style="border-radius: 8px; height: 300px"/>
+            <MudImage Src="Assets/Images/pc/pc-backdrop.webp" Style="border-radius: 8px; height: 288px"/>
             <div class="horizontal-list" style="overflow-x: scroll">
-                <style>
-                    .product-title {
-                        font-weight: bold;
-                        font-size: 16px;
-                    }
-
-                    .discount-label {
-                        color: #E30019;
-                        border: 1px solid #E30019;
-                        background-color: #E3001922;
-                        padding: 0px 6px;
-                        border-radius: 4px;
-                        font-weight: 500;
-                        height: 21px;
-                    }
-                </style>
                 @for (int i = 0; i <= 4; i++)
                 {
-                    <div class="item px-4 pt-6 pb-4 d-flex flex-column" >
+                    <div class="item px-4 pt-6 d-flex flex-column" >
                         <img src="Assets/Images/pc/@(DummyData.products[i].Id).webp" style="margin-bottom: 14px" />
-                        <span class="product-title mb-2">@DummyData.products[i].Name</span>
+                        <span class="mb-2" style="font-weight: bold; font-size: 16px">
+                            @DummyData.products[i].Name
+                        </span>
 
                         <span style="color: #6D6E72; font-size: 14px; text-decoration: line-through">
                             @formattedPriceOf(@DummyData.products[i].Price)
                         </span>
 
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-4">
                             <span style="color: #E30019; font-size: 18px; font-weight: bold;">
                                 @formattedPriceOf(calcDiscountPrice(@DummyData.products[i].Price, @DummyData.products[i].Discount))
                             </span>
