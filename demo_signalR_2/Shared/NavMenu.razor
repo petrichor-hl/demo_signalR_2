@@ -5,35 +5,67 @@
 		flex-direction: column
 	}
 
-		.navbar ul li a {
-			display: flex;
-			align-items: center;
-			padding: 12px 18px;
-			margin: 4px 8px;
-			gap: 10px;
-			transition: background-color 0.4s;
-			border-radius: 8px;
-		}
+	.navbar a {
+		display: flex;
+		align-items: center;
+		padding: 12px 18px;
+		margin: 4px 8px;
+		gap: 10px;
+		transition: background-color 0.4s;
+		border-radius: 8px;
+	}
 
-			.navbar ul li a:hover {
-				background-color: #013366;
-				transition: background-color color 0.4s 0.05s;
-				color: white;
-			}
+	.navbar .current-page {
+		background-color: #013366;
+		color: white;
+	}
+
+	.navbar a:hover {
+		background-color: #013366;
+		transition: background-color color 0.4s 0.05s;
+		color: white;
+	}
 </style>
 
 <div class="navbar">
-	<ul>
-		<li>
-			<a href="">
-				<MudIcon Icon="@Icons.Material.Filled.Bolt" /><span>BIG DEAL</span>
-			</a>
-		</li>
-		<li><a href="counter">
-				<MudIcon Icon="@Icons.Material.Filled.ShoppingCart" /><span>Mua hàng</span>
-			</a>
-		</li>
-	</ul>
+
+	@for (int i = 0; i <= 1; ++i)
+	{
+		var currentIndex = i;
+		<a href="@menuItems[i].page" class="@(currentPageIndex == i ? "current-page" : "")"
+		@onclick="(() => changeCurrentPageIndex(currentIndex))">
+			<MudIcon Icon="@menuItems[i].icon" /><span>@menuItems[i].title</span>
+		</a>
+	}
 </div>
 
+@code {
+	private class MenuItem
+	{
+		public string? page { get; set; }
+		public string? icon	{ get; set; }
+		public string? title { get; set; }
+	}
+
+	private MenuItem[] menuItems = new MenuItem[]
+	{
+		new MenuItem {
+			page = "", icon =
+			Icons.Material.Filled.Bolt,
+			title = "BIG DEAL",
+		},
+		new MenuItem { 
+			page = "counter", 
+			icon = Icons.Material.Filled.ShoppingCart, 
+			title = "Mua hàng",
+		},
+	};
+
+	private int currentPageIndex = 0;
+
+	private void changeCurrentPageIndex(int index)
+	{
+		currentPageIndex = index;
+	}
+}
 
