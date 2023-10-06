@@ -33,7 +33,7 @@
 	{
 		var currentIndex = i;
 		<a href="@menuItems[i].page" class="@(currentPageIndex == i ? "current-page" : "")"
-		@onclick="(() => changeCurrentPageIndex(currentIndex))">
+		@onclick="() => changeCurrentPageIndex(currentIndex)">
 			<MudIcon Icon="@menuItems[i].icon" /><span>@menuItems[i].title</span>
 		</a>
 	}
@@ -50,8 +50,8 @@
 	private MenuItem[] menuItems = new MenuItem[]
 	{
 		new MenuItem {
-			page = "", icon =
-			Icons.Material.Filled.Bolt,
+			page = "", 
+			icon = Icons.Material.Filled.Bolt,
 			title = "BIG DEAL",
 		},
 		new MenuItem { 

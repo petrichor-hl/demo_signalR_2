@@ -10,7 +10,7 @@
             public int Discount { get; set; }
         }
 
-        public static readonly Product[] products = new Product[]
+        public static readonly Product[] pcs = new Product[]
         {
             new Product { Id = "pc-1", Name = "PC TITAN Plus i4090", Price = 120000000, Discount = 2 },
             new Product { Id = "pc-2", Name = "PC ASUS EVANGELION 2", Price = 130000000, Discount = 5 },

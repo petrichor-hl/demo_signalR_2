@@ -1,0 +1,99 @@
+﻿<style>
+    .outlined-text-field {
+        position: relative;
+        width: 100%;
+    }
+
+    .outlined-text-field input {
+        width: 100%;
+        padding: 16px;
+        border: 1px solid #00000044;
+        border-radius: 8px;
+        font-size: 16px; background-color: transparent;
+        outline-color: #013366;
+        transition: border-color 0.5s;
+    }
+
+    .outlined-text-field span {
+        position: absolute;
+        left: 16px;
+        top: 17px;
+        color: #00000088;
+        font-size: 16px;
+        pointer-events: none;
+    }
+
+    .outlined-text-field input:hover {
+        border: 1px solid #000000;
+        transition: border-color 0.5s;
+    }
+
+    /* .outlined-text-field input:focus ~ span, */
+    .outlined-text-field input:valid ~ span {
+        color: transparent
+    }
+
+    .ok-button:hover {
+        color: #013366;
+        background-color: #01336644
+    }
+</style>
+
+<MudDialog>
+    <DialogContent>
+        <div class="d-flex flex-column">
+            <span class="mb-2" style="font-weight: bold; font-size: 16px">
+                Số lượng còn lại: <span style="color: #E30019">@remaining</span>
+            </span>
+
+            <span class="mb-1" style="font-weight: bold; font-size: 16px">
+                Thông tin
+            </span>
+
+            <div class="outlined-text-field mb-2">
+                <input type="text" inputmode="text" required="required" @bind-value="nameValue"/>
+                <span class="label">Tên</span>
+            </div>
+
+            <div class="outlined-text-field">
+                <input type="text" inputmode="text" required="required" @bind-value="quantityValue" />
+                <span class="label">Số lượng mua</span>
+            </div>
+
+            <div class="d-flex mt-4 mb-1">
+                <MudSpacer></MudSpacer>
+                <MudButton OnClick="Cancel">Cancel</MudButton>
+                <MudButton Class="ok-button" OnClick="Submit">Ok</MudButton>
+            </div>
+        </div>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [CascadingParameter] 
+    MudDialogInstance? MudDialog { get; set; }
+
+    [Parameter] 
+    public int remaining { get; set; }
+
+    public string? nameValue { get; set; }
+    public string? quantityValue { get; set; }
+
+    void Submit() {
+        if (nameValue != null && quantityValue != null) {
+
+            Dictionary<string, string> dataSendBack = new Dictionary<string, string>
+            {
+                {"CustomerName", nameValue},
+                {"QuantityProduct", quantityValue}
+            };
+            MudDialog!.Close(DialogResult.Ok(dataSendBack));
+
+        } 
+        else 
+        {
+            return;
+        }
+    }
+    void Cancel() => MudDialog!.Cancel();
+}

@@ -163,22 +163,22 @@
                 @for (int i = 0; i <= 4; i++)
                 {
                     <div class="item px-4 pt-6 d-flex flex-column" >
-                        <img src="Assets/Images/pc/@(DummyData.products[i].Id).webp" style="margin-bottom: 14px" />
+                        <img src="Assets/Images/pc/@(DummyData.pcs[i].Id).webp" style="margin-bottom: 14px" />
                         <span class="mb-2" style="font-weight: bold; font-size: 16px">
-                            @DummyData.products[i].Name
+                            @DummyData.pcs[i].Name
                         </span>
 
                         <span style="color: #6D6E72; font-size: 14px; text-decoration: line-through">
-                            @formatCurrency.FormattedPriceOf(@DummyData.products[i].Price)
+                            @formatCurrency.FormattedPriceOf(@DummyData.pcs[i].Price)
                         </span>
 
                         <div class="d-flex gap-4">
                             <span style="color: #E30019; font-size: 18px; font-weight: bold;">
-                                @formatCurrency.FormattedPriceOf(formatCurrency.CalcDiscountPrice(@DummyData.products[i].Price, @DummyData.products[i].Discount))
+                                @formatCurrency.FormattedPriceOf(formatCurrency.CalcDiscountPrice(@DummyData.pcs[i].Price, @DummyData.pcs[i].Discount))
                             </span>
 
                             <div class="discount-label">
-                                - @DummyData.products[i].Discount%
+                                - @DummyData.pcs[i].Discount%
                             </div>
                         </div>
 
