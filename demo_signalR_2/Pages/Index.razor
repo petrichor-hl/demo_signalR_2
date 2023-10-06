@@ -1,9 +1,11 @@
 ﻿@page "/"
 
 @using System.Globalization;
+@using Microsoft.AspNetCore.SignalR.Client;
 @using demo_signalR_2.Components
 @using demo_signalR_2.Data
 @using demo_signalR_2.Shared.func
+@using demo_signalR_2.Services
 @inject FormatCurrency formatCurrency
 
 
@@ -191,6 +193,48 @@
 
 </div>
 
+@inject SaleService SaleService;
+@inject NavigationManager Navigation;
+@inject ISnackbar Snackbar
+
+@implements IDisposable
+
 @code {
 
+    private HubConnection? hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/saleHub"))
+            .Build();
+
+        hubConnection.On<string, string, int>("RefreshSaleProducts", (customerName, productName, quantity) =>
+        {
+            InvokeAsync(() =>
+            {
+                StateHasChanged();
+                Snackbar.Add(
+                    $"{customerName} đã mua {quantity} {productName}", Severity.Success
+                );
+            });
+
+        });
+        await hubConnection.StartAsync();
+    }
+
+    public void Dispose()
+    {
+        DisposeHubConnection();
+    }
+
+    // Phương thức để ngắt kết nối Hub Connection
+    private void DisposeHubConnection()
+    {
+        if (hubConnection != null)
+        {
+            hubConnection.DisposeAsync();
+            hubConnection = null;
+        }
+    }
 }

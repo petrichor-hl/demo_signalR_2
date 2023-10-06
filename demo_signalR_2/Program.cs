@@ -1,4 +1,6 @@
 using demo_signalR_2.Data;
+using demo_signalR_2.Hubs;
+using demo_signalR_2.Services;
 using demo_signalR_2.Shared.func;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -12,6 +14,9 @@ StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configurat
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddSingleton<SaleService>();
+builder.Services.AddSignalR();
+
 builder.Services.AddMudServices();
 
 builder.Services.AddSingleton<FormatCurrency>();
@@ -34,5 +39,7 @@ app.UseRouting();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
+app.MapHub<SaleHub>("/saleHub");
 
 app.Run();

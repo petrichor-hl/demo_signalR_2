@@ -2,6 +2,7 @@
 @using demo_signalR_2.Components;
 @using demo_signalR_2.Data;
 @using demo_signalR_2.Shared.func
+@using demo_signalR_2.Services
 @inject FormatCurrency formatCurrency
 
 <PageTitle>BlazorServer</PageTitle>
@@ -63,7 +64,7 @@
             </div>
 
             <div class="d-flex justify-center align-center" style="flex-grow: 1; width: 100%">
-                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="() => OpenDialog(DummyData.macbooks[currentIndex].Name!, DummyData.macbooks[currentIndex].Quantity - DummyData.macbooks[currentIndex].Sold)" Style="background-color: #013366; color: white">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="() => OpenDialog(currentIndex, DummyData.macbooks[currentIndex].Quantity - DummyData.macbooks[currentIndex].Sold)" Style="background-color: #013366; color: white">
                     Mua
                 </MudButton>
             </div>
@@ -94,7 +95,7 @@
             </div>
 
             <div class="d-flex justify-center align-center" style="flex-grow: 1; width: 100%">
-                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="() => OpenDialog(DummyData.pcs[i].Name!, 10)" Style="background-color: #013366; color: white">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="() => OpenDialog(-1, 10)" Style="background-color: #013366; color: white">
                     Mua
                 </MudButton>
             </div>
@@ -106,32 +107,46 @@
 
 </div>
 
+@inject SaleService SaleService;
 @inject IDialogService DialogService
+
 @code {
 
-    private async Task OpenDialog(string productName, int remaining)
+    private async Task OpenDialog(int productIndex, int remaining)
     {
-        DialogOptions options = new DialogOptions {
-            FullWidth = true,
-            MaxWidth = MaxWidth.ExtraSmall,
-            CloseOnEscapeKey = true,
-        };
-
-        DialogParameters keyValues = new DialogParameters();
-        keyValues.Add("remaining", remaining);
-
-        var dialogResult = DialogService.Show<SimpleDialog>(productName, keyValues, options);
-        var result = await dialogResult.Result;
-
-        if (!result.Cancelled)
+        // -1 là PC nên bỏ qua
+        if (productIndex != -1)
         {
-            string customerName = (result.Data as Dictionary<string, string>)!["CustomerName"];
-            string quantity = (result.Data as Dictionary<string, string>)!["QuantityProduct"];
-            // Console.WriteLine(customerName);
-            // Console.WriteLine(quantity);
+            DialogOptions options = new DialogOptions
+                {
+                    FullWidth = true,
+                    MaxWidth = MaxWidth.ExtraSmall,
+                    CloseOnEscapeKey = true,
+                };
 
+            DialogParameters keyValues = new DialogParameters();
+            keyValues.Add("remaining", remaining);
 
+            string productName = DummyData.macbooks[productIndex].Name!;
+
+            var dialogResult = DialogService.Show<SimpleDialog>(productName, keyValues, options);
+            var result = await dialogResult.Result;
+
+            if (!result.Cancelled)
+            {
+                string customerName = (result.Data as Dictionary<string, string>)!["CustomerName"];
+                string quantityString = (result.Data as Dictionary<string, string>)!["QuantityProduct"];
+
+                // Console.WriteLine(customerName);
+                // Console.WriteLine(quantity);
+
+                int quantityInt = int.Parse(quantityString);
+
+                DummyData.macbooks[productIndex].Sold += quantityInt;
+                SaleService.NotifyHub(customerName, productName, quantityInt);
+            }
         }
+
     }
 
 }

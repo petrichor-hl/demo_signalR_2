@@ -17,7 +17,7 @@
 
 <div class="d-flex gap-2">
     <div class="progress-bar">
-        <div class="progress-bar-fill" style="width: @((double)Current / Total * 100)%" />
+        <div class="progress-bar-fill" style="width: @calcPercentage()%" />
         <span style="color: white; font-weight: 500; position: absolute;  top: 50%; left: 50%; transform: translate(-50%, -50%);">
             Đã bán: @Current
         </span>
@@ -39,10 +39,14 @@
 
 @code {
 
-	[Parameter]
-	public int Current { get; set; }
+    [Parameter]
+    public int Current { get; set; }
 
-	[Parameter]
-	public int Total { get; set; }
+    [Parameter]
+    public int Total { get; set; }
 
+    private double calcPercentage()
+    {
+        return Math.Min(1, (double)Current / Total) * 100;
+    }
 }
