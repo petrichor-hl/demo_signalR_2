@@ -9,5 +9,12 @@ namespace demo_signalR_2.Hubs
 			Console.WriteLine($"{Context.ConnectionId} has joined to Hub");
 			return base.OnConnectedAsync();
 		}
+
+		public override Task OnDisconnectedAsync(Exception? exception)
+		{
+			Console.WriteLine($"{Context.ConnectionId} has left the Hub");
+			return base.OnDisconnectedAsync(exception);
+		}
+
 	}
 }

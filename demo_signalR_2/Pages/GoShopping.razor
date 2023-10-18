@@ -6,38 +6,7 @@
 @inject FormatCurrency formatCurrency
 
 <PageTitle>BlazorServer</PageTitle>
-
-<style>
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(227px, 1fr));
-        gap: 12px;
-    }
-
-    .grid-item {
-        aspect-ratio: 227/350;
-        background-color: white;
-        border: 1px solid #013366;
-        border-radius: 8px;
-        transition: transform 0.2s;
-    }
-
-    .grid-item:hover {
-        transform: scale(1.15);
-        transition: transform 0.4s 0.1s;
-    }
-
-    .discount-label {
-        color: #E30019;
-        border: 1px solid #E30019;
-        background-color: #E3001922;
-        padding: 0px 6px;
-        border-radius: 4px;
-        font-weight: 500;
-        height: 21px;
-    }
-
-</style>
+<link rel="stylesheet" type="text/css" href="css/go_shopping.css" />
 
 <div class="grid-container ma-8">
     @for (int i = 0; i <= 7; i++)
@@ -95,7 +64,8 @@
             </div>
 
             <div class="d-flex justify-center align-center" style="flex-grow: 1; width: 100%">
-                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="() => OpenDialog(-1, 10)" Style="background-color: #013366; color: white">
+                <MudButton Variant="Variant.Filled" FullWidth="true" OnClick="() => OpenDialog(-1, 10)" 
+                    Style="background-color: #013366; color: white">
                     Mua
                 </MudButton>
             </div>
@@ -118,11 +88,11 @@
         if (productIndex != -1)
         {
             DialogOptions options = new DialogOptions
-                {
-                    FullWidth = true,
-                    MaxWidth = MaxWidth.ExtraSmall,
-                    CloseOnEscapeKey = true,
-                };
+            {
+                FullWidth = true,
+                MaxWidth = MaxWidth.ExtraSmall,
+                CloseOnEscapeKey = true,
+            };
 
             DialogParameters keyValues = new DialogParameters();
             keyValues.Add("remaining", remaining);

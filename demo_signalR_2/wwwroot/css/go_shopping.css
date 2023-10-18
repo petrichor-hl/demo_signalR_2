@@ -1,0 +1,28 @@
+﻿.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(227px, 1fr));
+    gap: 12px;
+}
+
+.grid-item {
+    aspect-ratio: 227/350;
+    background-color: white;
+    border: 1px solid #013366;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+    .grid-item:hover {
+        transform: scale(1.15);
+        transition: transform 0.4s 0.1s;
+    }
+
+.discount-label {
+    color: #E30019;
+    border: 1px solid #E30019;
+    background-color: #E3001922;
+    padding: 0px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+    height: 21px;
+}

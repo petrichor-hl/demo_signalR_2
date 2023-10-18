@@ -10,102 +10,7 @@
 
 
 <PageTitle>BlazorServer</PageTitle>
-
-<head>
-    <link rel="stylesheet" href="Assets/css/animations.css" />
-</head>
-
-<style>
-    /* .wrapper {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-    }
-
-    .wrapper .item {
-        width: 227px;
-        height: 340px;
-        background-color: white;
-        border-radius: 8px;
-        transition: transform 0.2s;
-    }
-
-    .wrapper .item:hover {
-        transform: scale(1.15);
-        transition: transform 0.4s 0.1s;
-        border: 1px solid black;
-    } */
-
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(227px, 1fr));
-        gap: 12px;
-    }
-
-    .grid-item {
-        aspect-ratio: 227/340;
-        background-color: white;
-        border-radius: 8px;
-        transition: transform 0.2s;
-    }
-
-    .grid-item:hover {
-        transform: scale(1.15);
-        transition: transform 0.4s 0.1s;
-        border: 1px solid black;
-    }
-
-    .horizontal-list {
-        display: flex;
-        gap: 12px;
-    }
-
-    .horizontal-list::-webkit-scrollbar {
-        height: 8px;
-        width: 0px;
-    }
-
-    .horizontal-list::-webkit-scrollbar-thumb {
-        border-radius: 100vh;
-    }
-
-    .horizontal-list::-webkit-scrollbar-thumb:hover {
-        background: #FFEE12;
-    }
-
-    .horizontal-list .item {
-        width: 227px;
-        height: 288px;
-        background-color: white;
-        border-radius: 8px;
-        margin-bottom: 8px;
-    }
-
-    .horizontal-list .item:hover {
-        background: linear-gradient(white, #FFEE12);
-        cursor: pointer
-    }
-
-    .discount-label {
-        color: #E30019;
-        border: 1px solid #E30019;
-        background-color: #E3001922;
-        padding: 0px 6px;
-        border-radius: 4px;
-        font-weight: 500;
-        height: 21px;
-    }
-
-    .max-line-2 {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2; /* number of lines to show */
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
-    }
-
-</style>
+<link rel="stylesheet" type="text/css" href="css/index.css" />
 
 <div class="d-flex flex-column gap-4 ma-4">
     <div class="d-flex flex-column rounded py-6 px-6 gap-2 " 
@@ -220,6 +125,7 @@
             });
 
         });
+
         await hubConnection.StartAsync();
     }
 
